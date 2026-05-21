@@ -52,11 +52,7 @@
     align-items: center;
     margin-bottom: 6px;
   }
-  .factor-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: #0E1C42;
-  }
+  .factor-name { font-size: 14px; font-weight: 600; color: #0E1C42; }
   .factor-weight {
     font-size: 12px;
     background: #0E1C42;
@@ -65,56 +61,24 @@
     border-radius: 20px;
     font-weight: 600;
   }
-  .factor-desc {
-    font-size: 12px;
-    color: #8a96a3;
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  .slider-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .slider-row input[type=range] {
-    flex: 1;
-    accent-color: #0E1C42;
-  }
-  .slider-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: #0E1C42;
-    min-width: 60px;
-    text-align: right;
-  }
+  .factor-desc { font-size: 12px; color: #8a96a3; margin-bottom: 8px; line-height: 1.5; }
+  .slider-row { display: flex; align-items: center; gap: 10px; }
+  .slider-row input[type=range] { flex: 1; accent-color: #0E1C42; cursor: pointer; }
+  .slider-label { font-size: 13px; font-weight: 700; color: #0E1C42; min-width: 80px; text-align: right; }
+  .slider-ends { display: flex; justify-content: space-between; font-size: 10px; color: #8a96a3; margin-top: 2px; }
   .score-display {
     text-align: center;
     padding: 24px;
     border-radius: 12px;
     margin-bottom: 16px;
-    border: 3px solid #0E1C42;
+    border: 3px solid #1d9e75;
     background: #f4f6f8;
+    transition: border-color 0.3s;
   }
-  .score-number {
-    font-size: 64px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .score-label {
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .score-range {
-    font-size: 12px;
-    color: #8a96a3;
-    margin-top: 4px;
-  }
-  .gauge-wrap {
-    margin-bottom: 16px;
-  }
+  .score-number { font-size: 72px; font-weight: 700; line-height: 1; margin-bottom: 8px; transition: color 0.3s; }
+  .score-label { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.3s; }
+  .score-range { font-size: 12px; color: #8a96a3; margin-top: 4px; }
+  .gauge-wrap { margin-bottom: 16px; }
   .gauge-bar {
     height: 16px;
     border-radius: 8px;
@@ -124,44 +88,20 @@
   }
   .gauge-pointer {
     position: absolute;
-    top: -4px;
-    width: 4px;
-    height: 24px;
+    top: -6px;
+    width: 6px;
+    height: 28px;
     background: #0E1C42;
-    border-radius: 2px;
+    border-radius: 3px;
     transform: translateX(-50%);
     transition: left 0.4s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   }
-  .gauge-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: #8a96a3;
-  }
-  .impact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .impact-card {
-    background: #f4f6f8;
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-  }
-  .impact-card .impact-value {
-    font-size: 18px;
-    font-weight: 700;
-    color: #0E1C42;
-    display: block;
-  }
-  .impact-card .impact-label {
-    font-size: 11px;
-    color: #8a96a3;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
+  .gauge-labels { display: flex; justify-content: space-between; font-size: 10px; color: #8a96a3; }
+  .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .impact-card { background: #f4f6f8; border-radius: 8px; padding: 12px; text-align: center; }
+  .impact-card .impact-value { font-size: 20px; font-weight: 700; color: #0E1C42; display: block; }
+  .impact-card .impact-label { font-size: 11px; color: #8a96a3; text-transform: uppercase; letter-spacing: 0.04em; }
   .insight {
     background: #FDF6EC;
     border-left: 4px solid #C7922C;
@@ -170,14 +110,10 @@
     font-size: 13px;
     color: #1a1a2e;
     line-height: 1.6;
-  }
-  .insight strong { color: #7a4a0e; }
-  .rate-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
     margin-top: 12px;
   }
+  .insight strong { color: #7a4a0e; }
+  .rate-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
   .rate-table th {
     background: #0E1C42;
     color: white;
@@ -187,24 +123,16 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
-  .rate-table td {
-    padding: 8px 10px;
-    border-bottom: 1px solid #f4f6f8;
-  }
-  .rate-table tr.active {
-    background: #EEF9FD;
-    font-weight: 600;
-  }
-  .rate-table tr.active td:first-child {
-    border-left: 3px solid #55C8E8;
-  }
+  .rate-table td { padding: 8px 10px; border-bottom: 1px solid #f4f6f8; }
+  .rate-table tr.active { background: #EEF9FD; font-weight: 600; }
+  .rate-table tr.active td:first-child { border-left: 3px solid #55C8E8; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>FICO Score Factor Slider</h1>
-  <p>Adjust each factor to see how it affects your credit score and what interest rates you would qualify for.</p>
+  <p>Adjust each factor to see how it affects your credit score and the loan rates you would qualify for.</p>
 </div>
 
 <div class="grid">
@@ -216,13 +144,12 @@
         <span class="factor-name">Payment History</span>
         <span class="factor-weight">35% of score</span>
       </div>
-      <div class="factor-desc">Have you paid all your bills on time? Even one late payment can significantly drop your score.</div>
+      <div class="factor-desc">Have you paid all bills on time? Even one late payment can drop your score significantly.</div>
       <div class="slider-row">
-        <span style="font-size:11px;color:#8a96a3;">Poor</span>
-        <input type="range" id="payment" min="0" max="100" value="80" oninput="updateScore()">
-        <span style="font-size:11px;color:#8a96a3;">Excellent</span>
+        <input type="range" id="payment" min="0" max="100" value="75" oninput="updateScore()">
         <span class="slider-label" id="paymentVal">Good</span>
       </div>
+      <div class="slider-ends"><span>Poor (missed payments)</span><span>Excellent (never late)</span></div>
     </div>
 
     <div class="factor">
@@ -230,13 +157,12 @@
         <span class="factor-name">Credit Utilization</span>
         <span class="factor-weight">30% of score</span>
       </div>
-      <div class="factor-desc">What percentage of your available credit are you using? Keep it below 30% for best results.</div>
+      <div class="factor-desc">What % of available credit are you using? Below 10% is ideal. Above 30% hurts your score.</div>
       <div class="slider-row">
-        <span style="font-size:11px;color:#8a96a3;">High (bad)</span>
-        <input type="range" id="utilization" min="0" max="100" value="30" oninput="updateScore()">
-        <span style="font-size:11px;color:#8a96a3;">Low (good)</span>
-        <span class="slider-label" id="utilizationVal">30%</span>
+        <input type="range" id="utilization" min="0" max="100" value="75" oninput="updateScore()">
+        <span class="slider-label" id="utilizationVal">~10%</span>
       </div>
+      <div class="slider-ends"><span>90%+ utilization (bad)</span><span>0-10% utilization (great)</span></div>
     </div>
 
     <div class="factor">
@@ -246,11 +172,10 @@
       </div>
       <div class="factor-desc">How long have you had credit accounts? Older accounts help your score.</div>
       <div class="slider-row">
-        <span style="font-size:11px;color:#8a96a3;">New</span>
-        <input type="range" id="history" min="0" max="100" value="40" oninput="updateScore()">
-        <span style="font-size:11px;color:#8a96a3;">Long</span>
+        <input type="range" id="history" min="0" max="100" value="30" oninput="updateScore()">
         <span class="slider-label" id="historyVal">2 yrs</span>
       </div>
+      <div class="slider-ends"><span>Less than 1 year</span><span>15+ years</span></div>
     </div>
 
     <div class="factor">
@@ -258,13 +183,12 @@
         <span class="factor-name">Credit Mix</span>
         <span class="factor-weight">10% of score</span>
       </div>
-      <div class="factor-desc">Do you have a variety of credit types — credit cards, loans, mortgage?</div>
+      <div class="factor-desc">Do you have a variety of credit types — cards, auto loan, student loan?</div>
       <div class="slider-row">
-        <span style="font-size:11px;color:#8a96a3;">One type</span>
         <input type="range" id="mix" min="0" max="100" value="50" oninput="updateScore()">
-        <span style="font-size:11px;color:#8a96a3;">Varied</span>
         <span class="slider-label" id="mixVal">Fair</span>
       </div>
+      <div class="slider-ends"><span>One type only</span><span>Diverse mix</span></div>
     </div>
 
     <div class="factor">
@@ -272,13 +196,12 @@
         <span class="factor-name">New Credit Inquiries</span>
         <span class="factor-weight">10% of score</span>
       </div>
-      <div class="factor-desc">How many times have lenders checked your credit recently? Too many hurt your score.</div>
+      <div class="factor-desc">How many times have lenders checked your credit recently? Too many inquiries hurt.</div>
       <div class="slider-row">
-        <span style="font-size:11px;color:#8a96a3;">Many</span>
-        <input type="range" id="inquiries" min="0" max="100" value="70" oninput="updateScore()">
-        <span style="font-size:11px;color:#8a96a3;">None</span>
+        <input type="range" id="inquiries" min="0" max="100" value="75" oninput="updateScore()">
         <span class="slider-label" id="inquiriesVal">Few</span>
       </div>
+      <div class="slider-ends"><span>5+ recent inquiries</span><span>None in 2 years</span></div>
     </div>
   </div>
 
@@ -293,7 +216,7 @@
 
     <div class="gauge-wrap">
       <div class="gauge-bar">
-        <div class="gauge-pointer" id="gaugePointer"></div>
+        <div class="gauge-pointer" id="gaugePointer" style="left:50%"></div>
       </div>
       <div class="gauge-labels">
         <span>Poor (300)</span>
@@ -319,41 +242,24 @@
       </div>
       <div class="impact-card">
         <span class="impact-value" id="monthlyDiff">—</span>
-        <span class="impact-label">Extra/mo vs top score</span>
+        <span class="impact-label">Extra/mo vs best score</span>
       </div>
     </div>
 
     <table class="rate-table" id="rateTable">
       <thead>
-        <tr>
-          <th>Score Range</th>
-          <th>Rating</th>
-          <th>Auto Rate</th>
-          <th>Mortgage</th>
-        </tr>
+        <tr><th>Score Range</th><th>Rating</th><th>Auto APR</th><th>Mortgage APR</th></tr>
       </thead>
       <tbody>
-        <tr data-min="800" data-max="850">
-          <td>800 — 850</td><td>Exceptional</td><td>5.2%</td><td>6.1%</td>
-        </tr>
-        <tr data-min="740" data-max="799">
-          <td>740 — 799</td><td>Very Good</td><td>6.4%</td><td>6.5%</td>
-        </tr>
-        <tr data-min="670" data-max="739">
-          <td>670 — 739</td><td>Good</td><td>8.1%</td><td>7.0%</td>
-        </tr>
-        <tr data-min="580" data-max="669">
-          <td>580 — 669</td><td>Fair</td><td>11.5%</td><td>8.2%</td>
-        </tr>
-        <tr data-min="300" data-max="579">
-          <td>300 — 579</td><td>Poor</td><td>14.8%</td><td>N/A</td>
-        </tr>
+        <tr data-min="800" data-max="850"><td>800 — 850</td><td>Exceptional</td><td>5.2%</td><td>6.1%</td></tr>
+        <tr data-min="740" data-max="799"><td>740 — 799</td><td>Very Good</td><td>6.4%</td><td>6.5%</td></tr>
+        <tr data-min="670" data-max="739"><td>670 — 739</td><td>Good</td><td>8.1%</td><td>7.0%</td></tr>
+        <tr data-min="580" data-max="669"><td>580 — 669</td><td>Fair</td><td>11.5%</td><td>8.2%</td></tr>
+        <tr data-min="300" data-max="579"><td>300 — 579</td><td>Poor</td><td>14.8%</td><td>N/A</td></tr>
       </tbody>
     </table>
 
-    <div class="insight" id="insight" style="margin-top:12px;">
-      Adjust the sliders to see how each factor affects your score and loan rates.
-    </div>
+    <div class="insight" id="insight">Adjust the sliders to see how each factor affects your score.</div>
   </div>
 </div>
 
@@ -370,35 +276,47 @@ function getRating(score) {
   return ratings.find(r => score >= r.min) || ratings[ratings.length - 1];
 }
 
+function calcMonthlyPayment(principal, annualRate, months) {
+  const r = annualRate / 100 / 12;
+  if (r === 0) return principal / months;
+  return principal * r / (1 - Math.pow(1 + r, -months));
+}
+
 function updateScore() {
-  const payment = parseInt(document.getElementById('payment').value);
-  const utilization = parseInt(document.getElementById('utilization').value);
-  const history = parseInt(document.getElementById('history').value);
-  const mix = parseInt(document.getElementById('mix').value);
-  const inquiries = parseInt(document.getElementById('inquiries').value);
+  const p = parseInt(document.getElementById('payment').value);
+  const u = parseInt(document.getElementById('utilization').value);
+  const h = parseInt(document.getElementById('history').value);
+  const m = parseInt(document.getElementById('mix').value);
+  const i = parseInt(document.getElementById('inquiries').value);
 
+  // Payment History labels
   const payLabels = ['Very Poor','Poor','Fair','Good','Very Good','Excellent'];
-  document.getElementById('paymentVal').textContent = payLabels[Math.floor(payment/20)];
+  document.getElementById('paymentVal').textContent = payLabels[Math.min(5, Math.floor(p / 17))];
 
-  const util = Math.round((1 - utilization/100) * 90);
-  document.getElementById('utilizationVal').textContent = util + '%';
+  // Utilization — slider goes left=bad (90%+) to right=good (0-10%)
+  const utilPct = Math.round(90 - (u / 100) * 85);
+  document.getElementById('utilizationVal').textContent = '~' + utilPct + '%';
 
-  const histYrs = Math.round(history/100 * 15);
+  // History labels
+  const histYrs = Math.round((h / 100) * 15);
   document.getElementById('historyVal').textContent = histYrs + ' yr' + (histYrs !== 1 ? 's' : '');
 
+  // Mix labels
   const mixLabels = ['None','Limited','Fair','Good','Excellent'];
-  document.getElementById('mixVal').textContent = mixLabels[Math.floor(mix/25)];
+  document.getElementById('mixVal').textContent = mixLabels[Math.min(4, Math.floor(m / 20))];
 
-  const inqLabels = ['Many','Several','Some','Few','None'];
-  document.getElementById('inquiriesVal').textContent = inqLabels[Math.floor(inquiries/25)];
+  // Inquiries labels
+  const inqLabels = ['5+ (bad)','Several','Some','Few','None'];
+  document.getElementById('inquiriesVal').textContent = inqLabels[Math.min(4, Math.floor(i / 20))];
 
+  // Score calculation — each factor scaled 0-1 then weighted
   const score = Math.round(
     300 +
-    (payment/100) * 190 * 0.35 +
-    (utilization/100) * 190 * 0.30 +
-    (history/100) * 190 * 0.15 +
-    (mix/100) * 190 * 0.10 +
-    (inquiries/100) * 190 * 0.10
+    (p / 100) * 550 * 0.35 +
+    (u / 100) * 550 * 0.30 +
+    (h / 100) * 550 * 0.15 +
+    (m / 100) * 550 * 0.10 +
+    (i / 100) * 550 * 0.10
   );
 
   const finalScore = Math.min(850, Math.max(300, score));
@@ -417,30 +335,36 @@ function updateScore() {
   document.getElementById('mortgageRate').textContent = rating.mortgageRate ? rating.mortgageRate + '%' : 'N/A';
   document.getElementById('cardRate').textContent = rating.cardRate + '%';
 
+  // Monthly payment difference vs best score
   const bestRating = ratings[0];
-  const autoLoan = 25000;
-  const loanMonths = 60;
-  const bestPayment = autoLoan * (bestRating.autoRate/100/12) / (1 - Math.pow(1 + bestRating.autoRate/100/12, -loanMonths));
-  const yourPayment = autoLoan * (rating.autoRate/100/12) / (1 - Math.pow(1 + rating.autoRate/100/12, -loanMonths));
-  const diff = Math.round(yourPayment - bestPayment);
-  document.getElementById('monthlyDiff').textContent = diff > 0 ? '+$' + diff : '$0';
+  const loan = 25000;
+  const months = 60;
+  const bestPmt = calcMonthlyPayment(loan, bestRating.autoRate, months);
+  const yourPmt = calcMonthlyPayment(loan, rating.autoRate, months);
+  const diff = Math.round(yourPmt - bestPmt);
+  document.getElementById('monthlyDiff').textContent = diff > 0 ? '+$' + diff + '/mo' : '$0';
 
-  const rows = document.querySelectorAll('#rateTable tbody tr');
-  rows.forEach(row => {
+  // Highlight active row
+  document.querySelectorAll('#rateTable tbody tr').forEach(row => {
     const min = parseInt(row.dataset.min);
     const max = parseInt(row.dataset.max);
     row.classList.toggle('active', finalScore >= min && finalScore <= max);
   });
 
-  let insightText = '<strong>💰 Coach Cash says:</strong> ';
-  if (finalScore >= 740) {
-    insightText += 'A ' + finalScore + ' score (' + rating.label + ') qualifies you for the best loan rates. On a $25,000 auto loan you\'re paying about ' + Math.round(bestPayment) + '/month. Keep paying on time and keeping utilization low to maintain this.';
+  // Insight
+  let txt = '<strong>💰 Coach Cash says:</strong> ';
+  if (finalScore >= 800) {
+    txt += 'A ' + finalScore + ' score is exceptional — you qualify for the best rates on everything. On a $25,000 auto loan you pay about $' + Math.round(bestPmt) + '/month. Keep paying on time and keep utilization low to stay here.';
+  } else if (finalScore >= 740) {
+    txt += 'A ' + finalScore + ' score is very good — you qualify for nearly the best rates. That extra $' + diff + '/month vs exceptional credit on a car loan costs $' + (diff * months).toLocaleString() + ' over 5 years. One big win: focus on keeping utilization below 10%.';
+  } else if (finalScore >= 670) {
+    txt += 'A ' + finalScore + ' score is good but there is room to improve. That extra $' + diff + '/month on a car loan costs $' + (diff * months).toLocaleString() + ' over 5 years compared to someone with exceptional credit. Payment history (35%) is your biggest opportunity.';
   } else if (finalScore >= 580) {
-    insightText += 'A ' + finalScore + ' score (' + rating.label + ') means you qualify for loans but at higher rates. That extra $' + diff + '/month on a car loan adds up to $' + (diff*60).toLocaleString() + ' over 5 years compared to someone with excellent credit. Your biggest opportunity: payment history at 35% weight.';
+    txt += 'A ' + finalScore + ' score means higher borrowing costs. That extra $' + diff + '/month on a car loan costs $' + (diff * months).toLocaleString() + ' over 5 years. Focus on payment history first — 12 months of on-time payments can meaningfully improve your score.';
   } else {
-    insightText += 'A ' + finalScore + ' score (' + rating.label + ') makes it hard and expensive to borrow. Focus first on payment history — one on-time payment every month for 12 months can start moving this score significantly. You may not qualify for a mortgage at this score.';
+    txt += 'A ' + finalScore + ' score makes borrowing difficult and expensive. You may not qualify for a mortgage at all. The fastest improvement: make every payment on time and pay down credit card balances below 30% of your limit. Give it 12 months of consistency.';
   }
-  document.getElementById('insight').innerHTML = insightText;
+  document.getElementById('insight').innerHTML = txt;
 }
 
 updateScore();
