@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paycheck Builder — Optima Financial Literacy</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6f8;
+    color: #1a1a2e;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .header {
+    background: #0E1C42;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .header h1 { font-size: 20px; color: #55C8E8; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: #a8c8d8; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #dde3ea;
+  }
+  .card h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0E1C42;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #55C8E8;
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0E1C42;
+    margin-bottom: 6px;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dde3ea;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1a1a2e;
+    background: #f4f6f8;
+  }
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: #55C8E8;
+    background: white;
+  }
+  .field .hint {
+    font-size: 11px;
+    color: #8a96a3;
+    margin-top: 4px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f4f6f8;
+    font-size: 14px;
+  }
+  .row:last-child { border-bottom: none; }
+  .row .label { color: #5a6a7a; }
+  .row .amount { font-weight: 600; color: #0E1C42; }
+  .row.deduction .amount { color: #c7422c; }
+  .row.total {
+    background: #0E1C42;
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    border-bottom: none;
+  }
+  .row.total .label { color: #a8c8d8; font-weight: 600; }
+  .row.total .amount { color: #55C8E8; font-size: 18px; }
+  .insight {
+    background: #FDF6EC;
+    border-left: 4px solid #C7922C;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: #1a1a2e;
+    line-height: 1.6;
+  }
+  .insight strong { color: #7a4a0e; }
+  .btn {
+    background: #0E1C42;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+  }
+  .btn:hover { background: #1a3060; }
+  .florida-note {
+    background: #EEF9FD;
+    border-left: 4px solid #55C8E8;
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #0e5568;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Paycheck Builder</h1>
+  <p>Enter your income details to see your estimated take-home pay after all deductions.</p>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Your Income Details</h2>
+
+    <div class="field">
+      <label>Annual Salary or Hourly Rate</label>
+      <select id="payType" onchange="updateCalc()">
+        <option value="annual">Annual Salary</option>
+        <option value="hourly">Hourly Wage</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label id="incomeLabel">Annual Salary ($)</label>
+      <input type="number" id="income" value="42000" min="0" step="500" oninput="updateCalc()">
+    </div>
+
+    <div class="field" id="hoursField" style="display:none">
+      <label>Hours Per Week</label>
+      <input type="number" id="hours" value="40" min="1" max="80" oninput="updateCalc()">
+    </div>
+
+    <div class="field">
+      <label>Pay Frequency</label>
+      <select id="payFreq" onchange="updateCalc()">
+        <option value="26">Every Two Weeks (26x/year)</option>
+        <option value="24">Twice a Month (24x/year)</option>
+        <option value="12">Monthly (12x/year)</option>
+        <option value="52">Weekly (52x/year)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Filing Status</label>
+      <select id="filingStatus" onchange="updateCalc()">
+        <option value="single">Single</option>
+        <option value="married">Married Filing Jointly</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Health Insurance Deduction (per paycheck $)</label>
+      <input type="number" id="healthIns" value="0" min="0" step="10" oninput="updateCalc()">
+      <div class="hint">Your share of employer health insurance, if any</div>
+    </div>
+
+    <div class="field">
+      <label>401k Contribution (%)</label>
+      <input type="number" id="retirement" value="0" min="0" max="50" step="0.5" oninput="updateCalc()">
+      <div class="hint">Percentage of gross pay contributed to retirement</div>
+    </div>
+
+    <button class="btn" onclick="updateCalc()">Calculate My Paycheck</button>
+
+    <div class="florida-note">
+      🌴 Florida has no state income tax — your take-home pay is higher than in most other states.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Your Estimated Paycheck</h2>
+    <div id="results">
+      <div class="row">
+        <span class="label">Gross Pay (per paycheck)</span>
+        <span class="amount" id="grossPay">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">Federal Income Tax</span>
+        <span class="amount" id="fedTax">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">Social Security (6.2%)</span>
+        <span class="amount" id="ssTax">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">Medicare (1.45%)</span>
+        <span class="amount" id="medTax">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">Health Insurance</span>
+        <span class="amount" id="healthDed">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">401k Contribution</span>
+        <span class="amount" id="retireDed">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">Total Deductions</span>
+        <span class="amount" id="totalDed">—</span>
+      </div>
+      <div class="row total">
+        <span class="label">NET PAY (Take-Home)</span>
+        <span class="amount" id="netPay">—</span>
+      </div>
+    </div>
+
+    <div class="insight" id="insight">
+      Enter your income details on the left and click Calculate to see your estimated paycheck breakdown.
+    </div>
+
+    <div class="card" style="margin-top:16px; background:#f4f6f8;">
+      <h2>Annual Summary</h2>
+      <div class="row">
+        <span class="label">Annual Gross Income</span>
+        <span class="amount" id="annualGross">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">Annual Taxes Paid</span>
+        <span class="amount" id="annualTax">—</span>
+      </div>
+      <div class="row deduction">
+        <span class="label">Annual 401k Saved</span>
+        <span class="amount" id="annualRetire">—</span>
+      </div>
+      <div class="row total">
+        <span class="label">Annual Take-Home</span>
+        <span class="amount" id="annualNet">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function fmt(n) {
+  return '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function calcFedTax(taxableAnnual, status) {
+  const brackets = status === 'married'
+    ? [[0,23200,0.10],[23200,94300,0.12],[94300,201050,0.22],[201050,383900,0.24],[383900,487450,0.32],[487450,731200,0.35],[731200,Infinity,0.37]]
+    : [[0,11600,0.10],[11600,47150,0.12],[47150,100525,0.22],[100525,191950,0.24],[191950,243725,0.32],[243725,609350,0.35],[609350,Infinity,0.37]];
+  const stdDed = status === 'married' ? 29200 : 14600;
+  const taxable = Math.max(0, taxableAnnual - stdDed);
+  let tax = 0;
+  for (const [low, high, rate] of brackets) {
+    if (taxable <= low) break;
+    tax += (Math.min(taxable, high) - low) * rate;
+  }
+  return tax;
+}
+
+function updateCalc() {
+  const payType = document.getElementById('payType').value;
+  const hoursField = document.getElementById('hoursField');
+  const incomeLabel = document.getElementById('incomeLabel');
+
+  if (payType === 'hourly') {
+    hoursField.style.display = 'block';
+    incomeLabel.textContent = 'Hourly Wage ($)';
+  } else {
+    hoursField.style.display = 'none';
+    incomeLabel.textContent = 'Annual Salary ($)';
+  }
+
+  let annualGross;
+  if (payType === 'hourly') {
+    const wage = parseFloat(document.getElementById('income').value) || 0;
+    const hrs = parseFloat(document.getElementById('hours').value) || 40;
+    annualGross = wage * hrs * 52;
+  } else {
+    annualGross = parseFloat(document.getElementById('income').value) || 0;
+  }
+
+  const freq = parseInt(document.getElementById('payFreq').value);
+  const status = document.getElementById('filingStatus').value;
+  const healthPerPay = parseFloat(document.getElementById('healthIns').value) || 0;
+  const retirePct = parseFloat(document.getElementById('retirement').value) || 0;
+
+  const grossPerPay = annualGross / freq;
+  const retirePerPay = grossPerPay * (retirePct / 100);
+  const annualRetire = retirePerPay * freq;
+  const taxableAnnual = annualGross - annualRetire;
+
+  const annualFedTax = calcFedTax(taxableAnnual, status);
+  const annualSS = Math.min(annualGross, 168600) * 0.062;
+  const annualMed = annualGross * 0.0145;
+  const annualHealth = healthPerPay * freq;
+
+  const fedPerPay = annualFedTax / freq;
+  const ssPerPay = annualSS / freq;
+  const medPerPay = annualMed / freq;
+  const totalDedPerPay = fedPerPay + ssPerPay + medPerPay + healthPerPay + retirePerPay;
+  const netPerPay = grossPerPay - totalDedPerPay;
+
+  const annualTotalTax = annualFedTax + annualSS + annualMed;
+  const annualNet = annualGross - annualTotalTax - annualHealth - annualRetire;
+
+  document.getElementById('grossPay').textContent = fmt(grossPerPay);
+  document.getElementById('fedTax').textContent = '-' + fmt(fedPerPay);
+  document.getElementById('ssTax').textContent = '-' + fmt(ssPerPay);
+  document.getElementById('medTax').textContent = '-' + fmt(medPerPay);
+  document.getElementById('healthDed').textContent = '-' + fmt(healthPerPay);
+  document.getElementById('retireDed').textContent = '-' + fmt(retirePerPay);
+  document.getElementById('totalDed').textContent = '-' + fmt(totalDedPerPay);
+  document.getElementById('netPay').textContent = fmt(netPerPay);
+
+  document.getElementById('annualGross').textContent = fmt(annualGross);
+  document.getElementById('annualTax').textContent = '-' + fmt(annualTotalTax);
+  document.getElementById('annualRetire').textContent = '-' + fmt(annualRetire);
+  document.getElementById('annualNet').textContent = fmt(annualNet);
+
+  const pct = annualGross > 0 ? Math.round((annualNet / annualGross) * 100) : 0;
+  const effRate = annualGross > 0 ? ((annualTotalTax / annualGross) * 100).toFixed(1) : 0;
+
+  document.getElementById('insight').innerHTML =
+    '<strong>💰 Coach Cash says:</strong> On a ' + fmt(annualGross) + ' salary, you take home about ' +
+    pct + '% of what you earn. Your effective tax rate is ' + effRate +
+    '% — that\'s lower than your top bracket rate because the bracket system only taxes the highest dollars at the highest rate. ' +
+    (retirePct > 0 ? 'Smart move adding the 401k — that ' + fmt(annualRetire) + ' annual contribution reduces your taxable income and builds your future at the same time.' :
+    'Try adding a 401k contribution above — watch how it reduces your taxable income while building your retirement.');
+}
+
+document.getElementById('payType').addEventListener('change', updateCalc);
+updateCalc();
+</script>
+</body>
+</html>
