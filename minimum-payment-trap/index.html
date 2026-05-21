@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minimum Payment Trap — Optima Financial Literacy</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6f8;
+    color: #1a1a2e;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .header {
+    background: #0E1C42;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .header h1 { font-size: 20px; color: #55C8E8; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: #a8c8d8; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #dde3ea;
+  }
+  .card h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0E1C42;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #55C8E8;
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0E1C42;
+    margin-bottom: 6px;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dde3ea;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1a1a2e;
+    background: #f4f6f8;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: #55C8E8;
+    background: white;
+  }
+  .field .hint { font-size: 11px; color: #8a96a3; margin-top: 4px; }
+  .slider-wrap { margin-bottom: 14px; }
+  .slider-wrap label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0E1C42;
+    margin-bottom: 6px;
+  }
+  .slider-wrap label span { color: #55C8E8; }
+  input[type=range] {
+    width: 100%;
+    accent-color: #0E1C42;
+  }
+  .stat-box {
+    background: #f4f6f8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .stat-box .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0E1C42;
+    display: block;
+  }
+  .stat-box .value.danger { color: #c7422c; }
+  .stat-box .value.good { color: #1d9e75; }
+  .stat-box .label-text {
+    font-size: 12px;
+    color: #8a96a3;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .compare-card {
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .compare-card.bad { background: #fdf0f0; border: 2px solid #c7422c; }
+  .compare-card.good { background: #f0fdf6; border: 2px solid #1d9e75; }
+  .compare-card .title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .compare-card.bad .title { color: #c7422c; }
+  .compare-card.good .title { color: #1d9e75; }
+  .compare-card .big { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .compare-card.bad .big { color: #c7422c; }
+  .compare-card.good .big { color: #1d9e75; }
+  .compare-card .small { font-size: 12px; color: #8a96a3; }
+  .insight {
+    background: #FDF6EC;
+    border-left: 4px solid #C7922C;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #1a1a2e;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+  .insight strong { color: #7a4a0e; }
+  .btn {
+    background: #0E1C42;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+  }
+  .btn:hover { background: #1a3060; }
+  .progress-bar-wrap {
+    background: #f4f6f8;
+    border-radius: 20px;
+    height: 12px;
+    margin: 8px 0;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #1d9e75, #55C8E8);
+    transition: width 0.4s ease;
+  }
+  .progress-bar.danger {
+    background: linear-gradient(90deg, #c7422c, #e07060);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Minimum Payment Trap</h1>
+  <p>See exactly how long it takes — and how much it costs — to pay off a credit card making only minimum payments.</p>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Your Credit Card Details</h2>
+
+    <div class="field">
+      <label>Starting Balance ($)</label>
+      <input type="number" id="balance" value="1500" min="100" max="50000" step="100" oninput="updateCalc()">
+    </div>
+
+    <div class="slider-wrap">
+      <label>Annual Interest Rate (APR) <span id="aprVal">24%</span></label>
+      <input type="range" id="apr" min="10" max="36" value="24" step="0.5" oninput="updateCalc()">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#8a96a3;">
+        <span>10% (good credit)</span>
+        <span>36% (store card)</span>
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <label>Minimum Payment % of Balance <span id="minPctVal">2%</span></label>
+      <input type="range" id="minPct" min="1" max="5" value="2" step="0.5" oninput="updateCalc()">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#8a96a3;">
+        <span>1% (some cards)</span>
+        <span>5% (aggressive)</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Your Fixed Monthly Payment ($)</label>
+      <input type="number" id="fixedPayment" value="150" min="0" step="10" oninput="updateCalc()">
+      <div class="hint">Compare minimum payments vs paying a fixed amount. Set to 0 to see minimum only.</div>
+    </div>
+
+    <button class="btn" onclick="updateCalc()">Calculate</button>
+  </div>
+
+  <div class="card">
+    <h2>The Real Cost</h2>
+
+    <div class="compare-grid">
+      <div class="compare-card bad">
+        <div class="title">Minimum Payments</div>
+        <div class="big" id="minMonths">—</div>
+        <div class="small">months to pay off</div>
+        <div class="big" id="minInterest" style="margin-top:8px;">—</div>
+        <div class="small">total interest paid</div>
+      </div>
+      <div class="compare-card good">
+        <div class="title">Fixed Payment</div>
+        <div class="big" id="fixMonths">—</div>
+        <div class="small">months to pay off</div>
+        <div class="big" id="fixInterest" style="margin-top:8px;">—</div>
+        <div class="small">total interest paid</div>
+      </div>
+    </div>
+
+    <div class="stat-box">
+      <span class="value danger" id="interestSaved">—</span>
+      <span class="label-text">Interest saved with fixed payment</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="value danger" id="timeSaved">—</span>
+      <span class="label-text">Months saved with fixed payment</span>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div style="font-size:12px;font-weight:600;color:#0E1C42;margin-bottom:4px;">Progress paying off $<span id="balanceLabel">1,500</span></div>
+      <div style="font-size:11px;color:#8a96a3;margin-bottom:4px;">Minimum payments — first 12 months</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar danger" id="minProgress" style="width:0%"></div>
+      </div>
+      <div style="font-size:11px;color:#8a96a3;margin-bottom:4px;margin-top:8px;">Fixed payment — first 12 months</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="fixProgress" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="insight" id="insight">
+      Adjust the sliders and enter your details to see the true cost of minimum payments.
+    </div>
+  </div>
+</div>
+
+<script>
+function fmt(n) {
+  return '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function calcMinPayoff(balance, monthlyRate, minPct) {
+  let bal = balance;
+  let months = 0;
+  let totalInterest = 0;
+  let after12 = balance;
+  while (bal > 0.01 && months < 1200) {
+    const interest = bal * monthlyRate;
+    totalInterest += interest;
+    bal += interest;
+    const payment = Math.max(bal * (minPct/100), 25);
+    bal -= payment;
+    if (bal < 0) bal = 0;
+    months++;
+    if (months === 12) after12 = bal;
+  }
+  return { months, totalInterest, after12 };
+}
+
+function calcFixedPayoff(balance, monthlyRate, payment) {
+  let bal = balance;
+  let months = 0;
+  let totalInterest = 0;
+  let after12 = balance;
+  if (payment <= 0) return { months: 9999, totalInterest: 0, after12: balance };
+  while (bal > 0.01 && months < 1200) {
+    const interest = bal * monthlyRate;
+    totalInterest += interest;
+    bal += interest;
+    bal -= Math.min(payment, bal);
+    if (bal < 0) bal = 0;
+    months++;
+    if (months === 12) after12 = bal;
+  }
+  return { months, totalInterest, after12 };
+}
+
+function updateCalc() {
+  const balance = parseFloat(document.getElementById('balance').value) || 0;
+  const apr = parseFloat(document.getElementById('apr').value) || 24;
+  const minPct = parseFloat(document.getElementById('minPct').value) || 2;
+  const fixedPayment = parseFloat(document.getElementById('fixedPayment').value) || 0;
+
+  document.getElementById('aprVal').textContent = apr + '%';
+  document.getElementById('minPctVal').textContent = minPct + '%';
+  document.getElementById('balanceLabel').textContent = balance.toLocaleString();
+
+  const monthlyRate = apr / 100 / 12;
+  const min = calcMinPayoff(balance, monthlyRate, minPct);
+  const fix = calcFixedPayoff(balance, monthlyRate, fixedPayment);
+
+  document.getElementById('minMonths').textContent = min.months < 1200 ? min.months : '100+ yrs';
+  document.getElementById('minInterest').textContent = fmt(min.totalInterest);
+  document.getElementById('fixMonths').textContent = fix.months < 1200 ? fix.months : 'Never';
+  document.getElementById('fixInterest').textContent = fix.months < 1200 ? fmt(fix.totalInterest) : '—';
+
+  const saved = min.totalInterest - fix.totalInterest;
+  const monthsSaved = min.months - fix.months;
+
+  document.getElementById('interestSaved').textContent = fix.months < 1200 ? fmt(saved) : '—';
+  document.getElementById('timeSaved').textContent = fix.months < 1200 ? monthsSaved + ' months (' + (monthsSaved/12).toFixed(1) + ' years)' : '—';
+
+  const minPaid12 = balance - min.after12;
+  const fixPaid12 = balance - fix.after12;
+  document.getElementById('minProgress').style.width = Math.min(100, (minPaid12/balance)*100) + '%';
+  document.getElementById('fixProgress').style.width = Math.min(100, (fixPaid12/balance)*100) + '%';
+
+  let insightText = '';
+  if (fix.months < 1200) {
+    const yrs = Math.floor(min.months/12);
+    const mos = min.months % 12;
+    insightText = '<strong>💰 Coach Cash says:</strong> Making only minimum payments on ' + fmt(balance) +
+      ' at ' + apr + '% APR takes <strong>' + (yrs > 0 ? yrs + ' years ' + mos + ' months' : mos + ' months') +
+      '</strong> and costs you ' + fmt(min.totalInterest) + ' in interest alone. ' +
+      'Your fixed payment of ' + fmt(fixedPayment) + '/month pays it off in ' + fix.months + ' months and saves you ' +
+      fmt(saved) + '. That\'s money you keep instead of giving to the credit card company.';
+  } else {
+    insightText = '<strong>💰 Coach Cash says:</strong> Making only minimum payments on ' + fmt(balance) +
+      ' at ' + apr + '% APR takes over 100 years to pay off. ' +
+      'Enter a fixed monthly payment above to see how much faster you can get debt-free.';
+  }
+  document.getElementById('insight').innerHTML = insightText;
+}
+
+updateCalc();
+</script>
+</body>
+</html>
