@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Portfolio Tracker — Optima Financial Literacy</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6f8;
+    color: #1a1a2e;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .header {
+    background: #0E1C42;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .header h1 { font-size: 20px; color: #55C8E8; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: #a8c8d8; }
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #dde3ea;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0E1C42;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #55C8E8;
+  }
+  .rules {
+    background: #f4f6f8;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #1a1a2e;
+  }
+  .rules ul { padding-left: 18px; }
+  .rules li { margin-bottom: 4px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  th {
+    background: #0E1C42;
+    color: white;
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #f4f6f8;
+    vertical-align: middle;
+  }
+  tr:nth-child(even) td { background: #fafbfc; }
+  input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 5px 7px;
+    border: 1px solid #dde3ea;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fff8e8;
+    color: #1a1a2e;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: #55C8E8;
+    background: white;
+  }
+  .calc-cell {
+    font-weight: 600;
+    color: #0E1C42;
+    font-size: 13px;
+  }
+  .calc-cell.positive { color: #1d9e75; }
+  .calc-cell.negative { color: #c7422c; }
+  .totals-row td {
+    background: #0E1C42 !important;
+    color: white;
+    font-weight: 700;
+    padding: 10px 8px;
+  }
+  .totals-row td.positive { color: #55C8E8; }
+  .totals-row td.negative { color: #ff9980; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 600px) { .summary-grid { grid-template-columns: 1fr; } }
+  .summary-box {
+    background: #f4f6f8;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .summary-box .val {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0E1C42;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .summary-box .val.positive { color: #1d9e75; }
+  .summary-box .val.negative { color: #c7422c; }
+  .summary-box .lbl {
+    font-size: 11px;
+    color: #8a96a3;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .insight {
+    background: #FDF6EC;
+    border-left: 4px solid #C7922C;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #1a1a2e;
+    line-height: 1.6;
+  }
+  .insight strong { color: #7a4a0e; }
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .btn {
+    background: #0E1C42;
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn:hover { background: #1a3060; }
+  .btn.secondary {
+    background: #f4f6f8;
+    color: #0E1C42;
+    border: 1px solid #dde3ea;
+  }
+  .btn.secondary:hover { background: #e8ecf0; }
+  .type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .type-stock { background: #EEF9FD; color: #0E5568; }
+  .type-index { background: #f0fdf6; color: #1d9e75; }
+  .type-bond { background: #FDF6EC; color: #7a4a0e; }
+  .type-etf { background: #f5f0fd; color: #5a2d9e; }
+  .phase-label {
+    display: inline-block;
+    background: #55C8E8;
+    color: #0E1C42;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.04em;
+  }
+  .note { font-size: 12px; color: #8a96a3; font-style: italic; margin-top: 6px; }
+  .reflection-q {
+    background: #f4f6f8;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #1a1a2e;
+    line-height: 1.6;
+  }
+  .reflection-q span {
+    font-weight: 700;
+    color: #0E1C42;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Stock Portfolio Tracker</h1>
+  <p>Build a hypothetical $10,000 portfolio using real market data. Track performance and calculate your true return after fees.</p>
+</div>
+
+<div class="card">
+  <h2>Portfolio Rules</h2>
+  <div class="rules">
+    <ul>
+      <li>You have a hypothetical <strong>$10,000</strong> to invest — allocate it across 3–5 investments below</li>
+      <li>You must include <strong>at least one individual stock</strong>, <strong>one index fund or ETF</strong>, and <strong>one bond fund</strong></li>
+      <li><strong>No single investment can exceed 50%</strong> of your portfolio ($5,000 max)</li>
+      <li>Look up current prices at <a href="https://finance.yahoo.com" target="_blank" style="color:#0E1C42; font-weight:600;">Yahoo Finance</a> or <a href="https://www.google.com/finance" target="_blank" style="color:#0E1C42; font-weight:600;">Google Finance</a></li>
+      <li>For funds: find the expense ratio by searching the ticker + "expense ratio"</li>
+      <li>Individual stocks have a 0% expense ratio</li>
+    </ul>
+  </div>
+  <p class="note">Yellow cells are for your input. All calculations update automatically.</p>
+</div>
+
+<div class="card">
+  <h2>Phase 1 — Enter Starting Portfolio <span class="phase-label">START DATE</span></h2>
+  <div style="overflow-x:auto;">
+  <table id="portfolioTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Investment Name</th>
+        <th>Ticker</th>
+        <th>Type</th>
+        <th>Start Price ($)</th>
+        <th>Shares</th>
+        <th>Start Value</th>
+        <th>End Price ($)</th>
+        <th>End Value</th>
+        <th>Gain/Loss $</th>
+        <th>Gain/Loss %</th>
+        <th>Exp. Ratio %</th>
+        <th>Fee Cost (annual)</th>
+      </tr>
+    </thead>
+    <tbody id="portfolioBody">
+    </tbody>
+    <tfoot>
+      <tr class="totals-row" id="totalsRow">
+        <td colspan="6" style="font-weight:700; letter-spacing:0.04em;">PORTFOLIO TOTALS</td>
+        <td id="totalStart">$0.00</td>
+        <td></td>
+        <td id="totalEnd">—</td>
+        <td id="totalGL" class="">—</td>
+        <td id="totalGLPct" class="">—</td>
+        <td></td>
+        <td id="totalFees">$0.00</td>
+      </tr>
+    </tfoot>
+  </table>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn" onclick="addRow()">+ Add Investment</button>
+    <button class="btn secondary" onclick="loadExample()">Load Example Portfolio</button>
+    <button class="btn secondary" onclick="clearAll()">Clear All</button>
+  </div>
+</div>
+
+<div class="card" id="summaryCard">
+  <h2>Portfolio Summary</h2>
+  <div class="summary-grid">
+    <div class="summary-box">
+      <span class="val" id="sumTotalInvested">$0.00</span>
+      <span class="lbl">Total Invested</span>
+    </div>
+    <div class="summary-box">
+      <span class="val" id="sumGrossReturn">—</span>
+      <span class="lbl">Gross Return %</span>
+    </div>
+    <div class="summary-box">
+      <span class="val" id="sumNetReturn">—</span>
+      <span class="lbl">Net Return After Fees %</span>
+    </div>
+  </div>
+
+  <div class="insight" id="insightBox">
+    Add your investments above and enter ending prices to see your portfolio analysis.
+  </div>
+</div>
+
+<div class="card">
+  <h2>Reflection Questions</h2>
+  <div class="reflection-q"><span>1.</span> What is your portfolio's total dollar gain or loss? What is your percentage return before fees?</div>
+  <div class="reflection-q"><span>2.</span> After subtracting expense ratio costs, what is your net return? How much did fees cost you in dollar terms?</div>
+  <div class="reflection-q"><span>3.</span> How did your individual stock perform compared to your index fund? What does this tell you about diversification?</div>
+  <div class="reflection-q"><span>4.</span> How does your portfolio's return compare to the S&P 500 for the same period? (Search "S&P 500 performance [dates]" on Yahoo Finance.)</div>
+  <div class="reflection-q"><span>5.</span> If you had put the full $10,000 into your worst-performing investment only, what would have happened? What does this demonstrate about concentration risk?</div>
+  <div class="reflection-q"><span>6.</span> Would you change your portfolio if you could start over? What would you do differently and why?</div>
+</div>
+
+<script>
+let rows = [];
+
+function fmt(n) {
+  if (isNaN(n) || n === null) return '—';
+  return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function fmtPct(n) {
+  if (isNaN(n) || n === null) return '—';
+  return (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+}
+
+function getTypeClass(type) {
+  if (type === 'Stock') return 'type-stock';
+  if (type === 'Index Fund') return 'type-index';
+  if (type === 'Bond Fund') return 'type-bond';
+  return 'type-etf';
+}
+
+function addRow(data) {
+  const id = Date.now() + Math.random();
+  rows.push(id);
+  const tbody = document.getElementById('portfolioBody');
+  const tr = document.createElement('tr');
+  tr.id = 'row-' + id;
+  tr.innerHTML = `
+    <td style="text-align:center; color:#8a96a3; font-size:12px;">${rows.length}</td>
+    <td><input type="text" id="name-${id}" placeholder="e.g. Apple Inc." oninput="recalc()" style="min-width:120px;"></td>
+    <td><input type="text" id="ticker-${id}" placeholder="e.g. AAPL" oninput="recalc()" style="min-width:70px; text-transform:uppercase;"></td>
+    <td>
+      <select id="type-${id}" onchange="recalc()">
+        <option value="Stock">Stock</option>
+        <option value="Index Fund">Index Fund</option>
+        <option value="ETF">ETF</option>
+        <option value="Bond Fund">Bond Fund</option>
+      </select>
+    </td>
+    <td><input type="number" id="startPrice-${id}" placeholder="0.00" min="0" step="0.01" oninput="recalc()" style="min-width:80px;"></td>
+    <td><input type="number" id="shares-${id}" placeholder="0" min="0" step="0.001" oninput="recalc()" style="min-width:70px;"></td>
+    <td><span class="calc-cell" id="startVal-${id}">—</span></td>
+    <td><input type="number" id="endPrice-${id}" placeholder="0.00" min="0" step="0.01" oninput="recalc()" style="min-width:80px;"></td>
+    <td><span class="calc-cell" id="endVal-${id}">—</span></td>
+    <td><span class="calc-cell" id="gl-${id}">—</span></td>
+    <td><span class="calc-cell" id="glPct-${id}">—</span></td>
+    <td><input type="number" id="expense-${id}" placeholder="0.00" min="0" max="5" step="0.01" oninput="recalc()" style="min-width:70px;"></td>
+    <td><span class="calc-cell" id="fee-${id}">—</span></td>
+  `;
+  if (data) {
+    tbody.appendChild(tr);
+    document.getElementById('name-' + id).value = data.name || '';
+    document.getElementById('ticker-' + id).value = data.ticker || '';
+    document.getElementById('type-' + id).value = data.type || 'Stock';
+    document.getElementById('startPrice-' + id).value = data.startPrice || '';
+    document.getElementById('shares-' + id).value = data.shares || '';
+    document.getElementById('endPrice-' + id).value = data.endPrice || '';
+    document.getElementById('expense-' + id).value = data.expense || '';
+  } else {
+    tbody.appendChild(tr);
+  }
+  recalc();
+}
+
+function recalc() {
+  let totalStart = 0;
+  let totalEnd = 0;
+  let hasEnd = false;
+  let totalFees = 0;
+
+  rows.forEach(id => {
+    const startPrice = parseFloat(document.getElementById('startPrice-' + id)?.value) || 0;
+    const shares = parseFloat(document.getElementById('shares-' + id)?.value) || 0;
+    const endPrice = parseFloat(document.getElementById('endPrice-' + id)?.value);
+    const expense = parseFloat(document.getElementById('expense-' + id)?.value) || 0;
+
+    const startVal = startPrice * shares;
+    const endVal = !isNaN(endPrice) && endPrice > 0 ? endPrice * shares : null;
+    const gl = endVal !== null ? endVal - startVal : null;
+    const glPct = endVal !== null && startVal > 0 ? ((endVal - startVal) / startVal) * 100 : null;
+    const fee = endVal !== null ? endVal * (expense / 100) : startVal * (expense / 100);
+
+    document.getElementById('startVal-' + id).textContent = startVal > 0 ? fmt(startVal) : '—';
+
+    if (endVal !== null) {
+      document.getElementById('endVal-' + id).textContent = fmt(endVal);
+      hasEnd = true;
+    } else {
+      document.getElementById('endVal-' + id).textContent = '—';
+    }
+
+    const glEl = document.getElementById('gl-' + id);
+    const glPctEl = document.getElementById('glPct-' + id);
+    if (gl !== null) {
+      glEl.textContent = (gl >= 0 ? '+' : '') + fmt(gl);
+      glEl.className = 'calc-cell ' + (gl >= 0 ? 'positive' : 'negative');
+      glPctEl.textContent = fmtPct(glPct);
+      glPctEl.className = 'calc-cell ' + (glPct >= 0 ? 'positive' : 'negative');
+    } else {
+      glEl.textContent = '—'; glEl.className = 'calc-cell';
+      glPctEl.textContent = '—'; glPctEl.className = 'calc-cell';
+    }
+
+    document.getElementById('fee-' + id).textContent = fmt(fee);
+
+    totalStart += startVal;
+    if (endVal !== null) totalEnd += endVal;
+    totalFees += fee;
+  });
+
+  document.getElementById('totalStart').textContent = fmt(totalStart);
+  document.getElementById('sumTotalInvested').textContent = fmt(totalStart);
+
+  if (hasEnd) {
+    const totalGL = totalEnd - totalStart;
+    const totalGLPct = totalStart > 0 ? (totalGL / totalStart) * 100 : 0;
+    const netGLPct = totalStart > 0 ? ((totalGL - totalFees) / totalStart) * 100 : 0;
+
+    const glEl = document.getElementById('totalGL');
+    glEl.textContent = (totalGL >= 0 ? '+' : '') + fmt(totalGL);
+    glEl.className = totalGL >= 0 ? 'positive' : 'negative';
+
+    const pctEl = document.getElementById('totalGLPct');
+    pctEl.textContent = fmtPct(totalGLPct);
+    pctEl.className = totalGLPct >= 0 ? 'positive' : 'negative';
+
+    document.getElementById('totalEnd').textContent = fmt(totalEnd);
+    document.getElementById('totalFees').textContent = fmt(totalFees);
+
+    const grossEl = document.getElementById('sumGrossReturn');
+    grossEl.textContent = fmtPct(totalGLPct);
+    grossEl.className = 'val ' + (totalGLPct >= 0 ? 'positive' : 'negative');
+
+    const netEl = document.getElementById('sumNetReturn');
+    netEl.textContent = fmtPct(netGLPct);
+    netEl.className = 'val ' + (netGLPct >= 0 ? 'positive' : 'negative');
+
+    let insight = '<strong>&#128176; Portfolio Analysis:</strong> ';
+    if (totalGLPct > 0) {
+      insight += `Your portfolio gained <strong>${fmtPct(totalGLPct)}</strong> gross. After annual fees of ${fmt(totalFees)}, your net return is <strong>${fmtPct(netGLPct)}</strong>. `;
+    } else {
+      insight += `Your portfolio lost <strong>${fmtPct(totalGLPct)}</strong>. After fees of ${fmt(totalFees)}, your net return is <strong>${fmtPct(netGLPct)}</strong>. `;
+    }
+    if (totalFees > 0) {
+      insight += `Fees cost you ${fmt(totalFees)} in this period — over 30 years that compounding fee drag becomes significant. `;
+    }
+    insight += 'Compare your return to the S&amp;P 500 for the same period to see how your portfolio performed relative to the market.';
+    document.getElementById('insightBox').innerHTML = insight;
+  } else {
+    document.getElementById('totalEnd').textContent = '—';
+    document.getElementById('totalGL').textContent = '—';
+    document.getElementById('totalGLPct').textContent = '—';
+    document.getElementById('totalFees').textContent = fmt(totalFees);
+    document.getElementById('sumGrossReturn').textContent = '—';
+    document.getElementById('sumGrossReturn').className = 'val';
+    document.getElementById('sumNetReturn').textContent = '—';
+    document.getElementById('sumNetReturn').className = 'val';
+  }
+}
+
+function loadExample() {
+  clearAll();
+  const examples = [
+    {name:'Apple Inc.', ticker:'AAPL', type:'Stock', startPrice:185.50, shares:10, endPrice:192.30, expense:0},
+    {name:'Fidelity Zero Total Market', ticker:'FZROX', type:'Index Fund', startPrice:15.20, shares:200, endPrice:15.85, expense:0},
+    {name:'Vanguard Total Bond Market ETF', ticker:'BND', type:'Bond Fund', startPrice:72.40, shares:50, endPrice:71.90, expense:0.03},
+    {name:'NVIDIA Corporation', ticker:'NVDA', type:'Stock', startPrice:480.00, shares:3, endPrice:510.00, expense:0},
+    {name:'Vanguard S&P 500 ETF', ticker:'VOO', type:'ETF', startPrice:420.00, shares:5, endPrice:435.00, expense:0.03}
+  ];
+  examples.forEach(e => addRow(e));
+}
+
+function clearAll() {
+  rows = [];
+  document.getElementById('portfolioBody').innerHTML = '';
+  recalc();
+}
+
+// Start with 3 empty rows
+addRow(); addRow(); addRow();
+</script>
+</body>
+</html>
